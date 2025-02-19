@@ -18,7 +18,7 @@
             margin: 0;
             padding: 0;
             font-family: 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #16a34a, #22c55e); /* Cor verde */
+            background: linear-gradient(135deg, #16a34a, #22c55e);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -39,7 +39,7 @@
         .container h1 {
             margin-bottom: 30px;
             font-size: 2.2rem;
-            color: #16a34a; /* Cor verde */
+            color: #16a34a;
         }
 
         .form-group {
@@ -52,7 +52,7 @@
             top: 50%;
             left: 20px;
             transform: translateY(-50%);
-            color: #22c55e; /* Cor verde */
+            color: #22c55e;
             font-size: 1.1rem;
         }
 
@@ -66,14 +66,14 @@
         }
 
         .form-group input:focus {
-            border-color: #22c55e; /* Cor verde */
+            border-color: #22c55e;
             outline: none;
         }
 
         button {
             width: 100%;
             padding: 14px;
-            background: #22c55e; /* Cor verde */
+            background: #22c55e;
             color: #fff;
             border: none;
             border-radius: 8px;
@@ -84,7 +84,7 @@
         }
 
         button:hover {
-            background: #16a34a; /* Cor verde */
+            background: #16a34a;
             transform: translateY(-2px);
         }
 
@@ -99,7 +99,7 @@
         }
 
         .redirect a {
-            color: #22c55e; /* Cor verde */
+            color: #22c55e;
             text-decoration: none;
             font-weight: 500;
         }
@@ -156,7 +156,7 @@
         <h1>Crie sua Conta</h1>
         <form id="register-form">
             <div class="form-group">
-                <i class="fas fa-user"></i> <!-- Ícone para o nome -->
+                <i class="fas fa-user"></i>
                 <input type="text" id="name" placeholder="Nome Completo" required aria-label="Nome Completo">
             </div>
             <div class="form-group">
@@ -169,8 +169,7 @@
             </div>
             <button type="submit">Registrar</button>
         </form>
-        <div class="redirect">
-            Já tem uma conta? <a href="index.html">Faça login</a>
+       
         </div>
         <div id="error-message" class="error" role="alert" aria-live="assertive"></div>
         <div id="success-message" class="success" role="alert" aria-live="assertive"></div>
@@ -181,18 +180,20 @@
         const errorMessage = document.getElementById('error-message');
         const successMessage = document.getElementById('success-message');
 
-        registerForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
+        registerForm.addEventListener('submit', async function(event) {
+            event.preventDefault();
 
-            const name = document.getElementById('name').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const password = document.getElementById('password').value.trim();
+            const nameInput = document.getElementById('name');
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
 
-            // Limpar mensagens de erro anteriores
+            const name = nameInput.value.trim();
+            const email = emailInput.value.trim();
+            const password = passwordInput.value.trim();
+
             errorMessage.textContent = '';
             successMessage.textContent = '';
 
-            // Validações adicionais podem ser adicionadas aqui
             if (password.length < 6) {
                 errorMessage.textContent = 'A senha deve ter pelo menos 6 caracteres.';
                 return;
@@ -202,16 +203,19 @@
                 const response = await fetch('https://superpro2025.onrender.com/api/register', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
+                        'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ name, email, password }), // Enviar o nome junto com o e-mail e a senha
+                    body: JSON.stringify({
+                        name: name,
+                        email: email,
+                        password: password
+                    })
                 });
 
                 const data = await response.json();
 
                 if (response.ok) {
-                    successMessage.textContent = 'Conta criada com sucesso!';
-                    window.location.href = 'index.html'; // Redirecionar para login
+                    successMessage.innerHTML = 'Conta criada com sucesso!<br>Faça o Login pelo site: superproclube.com.br';
                 } else {
                     errorMessage.textContent = data.error || 'Erro ao criar a conta. Por favor, tente novamente.';
                 }
